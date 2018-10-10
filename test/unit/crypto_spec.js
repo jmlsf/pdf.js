@@ -1,9 +1,26 @@
-/* globals expect, it, describe, calculateMD5, ARCFourCipher, Name, beforeAll,
-           CipherTransformFactory, calculateSHA256, calculateSHA384, afterAll,
-           calculateSHA512, AES128Cipher, AES256Cipher, PDF17, PDF20, Dict,
-           PasswordException, PasswordResponses, stringToBytes */
+/* Copyright 2017 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-'use strict';
+import {
+  AES128Cipher, AES256Cipher, ARCFourCipher, calculateMD5, calculateSHA256,
+  calculateSHA384, calculateSHA512, CipherTransformFactory, PDF17, PDF20
+} from '../../src/core/crypto';
+import { Dict, Name } from '../../src/core/primitives';
+import {
+  PasswordException, PasswordResponses, stringToBytes
+} from '../../src/shared/util';
 
 describe('crypto', function() {
   function hex2binary(s) {
@@ -482,6 +499,7 @@ describe('CipherTransformFactory', function() {
 
   function ensurePasswordNeeded(done, dict, fileId, password) {
     try {
+      // eslint-disable-next-line no-new
       new CipherTransformFactory(dict, fileId, password);
     } catch (ex) {
       expect(ex instanceof PasswordException).toEqual(true);
@@ -495,6 +513,7 @@ describe('CipherTransformFactory', function() {
 
   function ensurePasswordIncorrect(done, dict, fileId, password) {
     try {
+      // eslint-disable-next-line no-new
       new CipherTransformFactory(dict, fileId, password);
     } catch (ex) {
       expect(ex instanceof PasswordException).toEqual(true);
